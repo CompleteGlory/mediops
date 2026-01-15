@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mediops/core/helpers/app_regex.dart';
 import 'package:mediops/core/helpers/extensions.dart';
@@ -8,6 +8,11 @@ import 'package:mediops/core/routing/routes.dart';
 import 'package:mediops/core/themes/app_colors.dart';
 import 'package:mediops/core/widgets/app_primary_button.dart';
 import 'package:mediops/core/widgets/app_text_field.dart';
+import 'package:mediops/core/widgets/auth_form_container.dart';
+import 'package:mediops/core/widgets/password_strength_bar.dart';
+import 'package:mediops/core/widgets/spacing.dart';
+import 'package:mediops/features/register/logic/cubit/register_cubit.dart';
+import 'package:mediops/features/register/UI/widgets/register_bloc_listener.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -17,15 +22,11 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegistersScreenState extends State<RegisterScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
   bool obscurePassword = true;
   int passwordStrengthValue = 0;
 
-  // Calculate password strength using AppRegex
+  RegisterCubit get registerCubit => context.read<RegisterCubit>();
+
   void _updatePasswordStrength(String password) {
     int strength = 0;
     if (AppRegex.hasLowerCase(password)) strength++;
@@ -69,153 +70,123 @@ class _RegistersScreenState extends State<RegisterScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  // LOGO
-                  Image.asset('assets/images/mediops light.png', height: 120.h),
-                  SizedBox(height: 24.h),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final formWidth = constraints.maxWidth > 600 ? 600.w : constraints.maxWidth * 0.95;
+            final fieldWidth = 400.w;
 
-                  Text(
-                    'Register Your Clinic',
-                    style: TextStyle(
-                      fontFamily: 'mulish',
-                      fontSize: 32.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.secondary,
-                    ),
-                  ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    'Sign up to manage appointments, patients, and payments efficiently.',
-                    style: TextStyle(
-                      fontFamily: 'mulish',
-                      fontSize: 16.sp,
-                      color: AppColors.secondary.withOpacity(0.7),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 40.h),
+            return Center(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: formWidth),
+                  child: AuthFormContainer(
+                    child: Form(
+                      key: registerCubit.formKey,
+                      child: Column(
+                        children: [
+                          Image.asset('assets/images/logo white.png', height: 100.h),
+                          verticalSpace(20),
 
-                  AppTextField(
-                    label: 'Clinic Name',
-                    controller: nameController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Clinic name is required';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20.h),
-
-                  AppTextField(
-                    label: 'Email',
-                    controller: emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Email is required';
-                      } else if (!AppRegex.isEmailValid(value)) {
-                        return 'Enter a valid email';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20.h),
-
-                  AppTextField(
-                    label: 'Password',
-                    controller: passwordController,
-                    obscureText: obscurePassword,
-                    onChanged: (val) {
-                      _updatePasswordStrength(val); // <-- CALL THE METHOD HERE
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty)
-                        return 'Password is required';
-                      if (!AppRegex.isPasswordValid(value)) {
-                        return 'Password must contain:\n- Min 8 chars\n- Upper & lower case\n- Number & special char';
-                      }
-                      return null;
-                    },
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        obscurePassword
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        color: AppColors.secondary.withOpacity(0.7),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          obscurePassword = !obscurePassword;
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-
-                  // Password strength bar
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: passwordStrengthValue,
-                        child: Container(
-                          height: 6.h,
-                          decoration: BoxDecoration(
-                            color: _getStrengthColor(),
-                            borderRadius: BorderRadius.circular(3.r),
+                          Text(
+                            'Register Your Clinic',
+                            style: TextStyle(
+                              fontFamily: 'mulish',
+                              fontSize: 26.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.secondary,
+                            ),
                           ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 5 - passwordStrengthValue,
-                        child: Container(
-                          height: 6.h,
-                          color: AppColors.secondary.withOpacity(0.2),
-                        ),
-                      ),
-                      SizedBox(width: 8.w),
-                      Text(
-                        _getStrengthText(),
-                        style: TextStyle(
-                          fontFamily: 'mulish',
-                          fontSize: 12.sp,
-                          color: AppColors.secondary,
-                        ),
-                      ),
-                    ],
-                  ),
+                          verticalSpace(6),
+                          Text(
+                            'Manage patients, appointments & payments',
+                            style: TextStyle(
+                              fontFamily: 'mulish',
+                              fontSize: 14.sp,
+                              color: AppColors.secondary.withOpacity(0.7),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          verticalSpace(28),
 
-                  SizedBox(height: 30.h),
-                  AppPrimaryButton(
-                    text: 'Register Clinic',
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        // TODO: Call Registers API
-                      }
-                    },
-                  ),
-                  SizedBox(height: 16.h),
-                  TextButton(
-                    onPressed: () => context.pushNamed(Routes.login),
-                    child: Text(
-                      'Already have an account? Login',
-                      style: TextStyle(
-                        fontFamily: 'mulish',
-                        fontSize: 14.sp,
-                        color: AppColors.primary,
+                          ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: fieldWidth),
+                            child: AppTextField(
+                              label: 'Clinic Name',
+                              controller: registerCubit.clinicNameController,
+                              validator: (value) => value == null || value.isEmpty
+                                  ? 'Clinic name is required'
+                                  : null,
+                            ),
+                          ),
+                          verticalSpace(16),
+
+                          ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: fieldWidth),
+                            child: AppTextField(
+                              label: 'Password',
+                              controller: registerCubit.passwordController,
+                              obscureText: obscurePassword,
+                              onChanged: _updatePasswordStrength,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) return 'Password is required';
+                                if (!AppRegex.isPasswordValid(value)) return 'Weak password';
+                                return null;
+                              },
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  obscurePassword ? Icons.visibility_off : Icons.visibility,
+                                  color: AppColors.secondary.withOpacity(0.6),
+                                ),
+                                onPressed: () => setState(() => obscurePassword = !obscurePassword),
+                              ),
+                            ),
+                          ),
+                          verticalSpace(10),
+
+                          ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: fieldWidth),
+                            child: PasswordStrengthBar(
+                              color: _getStrengthColor(),
+                              strength: passwordStrengthValue,
+                              text: _getStrengthText(),
+                            ),
+                          ),
+                          verticalSpace(28),
+
+                          ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: fieldWidth),
+                            child: AppPrimaryButton(
+                              text: 'Register Clinic',
+                              onPressed: () => registerCubit.register(),
+                            ),
+                          ),
+                          verticalSpace(12),
+
+                          ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: fieldWidth),
+                            child: TextButton(
+                              onPressed: () => context.pushNamed(Routes.login),
+                              child: Text(
+                                'Already have an account? Login',
+                                style: TextStyle(
+                                  fontFamily: 'mulish',
+                                  fontSize: 13.sp,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const RegisterBlocListener(),
+                        ],
                       ),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

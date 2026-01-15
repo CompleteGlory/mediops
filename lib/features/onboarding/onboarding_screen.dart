@@ -7,7 +7,6 @@ import 'package:mediops/core/routing/routes.dart';
 import 'package:mediops/core/themes/app_colors.dart';
 import 'package:mediops/core/themes/app_text_styles.dart';
 import 'package:mediops/core/widgets/app_primary_button.dart';
-import 'package:mediops/features/login/UI/login_screen.dart';
 import 'package:mediops/features/onboarding/feature_card.dart';
 
 

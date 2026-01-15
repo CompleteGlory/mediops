@@ -35,8 +35,23 @@ class LoginBlocListener extends StatelessWidget {
             );
             DioFactory.setTokenIntoHeaderAfterLogin(loginResponse.token);
 
-            // ✅ NAVIGATE
-            Navigator.pushReplacementNamed(context, Routes.home);
+            // ✅ NAVIGATE BASED ON PERMISSION
+            String route;
+            
+            if (loginResponse.permission == 0) {
+              // Permission 0: Patient/Public user (limited access)
+              route = Routes.patient;
+            } else if (loginResponse.permission == 1) {
+              // Permission 1: Therapist (moderate access)
+              route = Routes.therapist;
+            } else if (loginResponse.permission >= 2) {
+              // Permission >= 2: Administrator/Secretary (full access)
+              route = Routes.clinicAdmin;
+            } else {
+              route = Routes.login;
+            }
+            
+            Navigator.pushReplacementNamed(context, route);
           },
           failure: (message) {
             Navigator.of(context, rootNavigator: true).pop();
@@ -54,3 +69,7 @@ class LoginBlocListener extends StatelessWidget {
     );
   }
 }
+
+
+
+
