@@ -1,7 +1,13 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mediops/core/themes/app_colors.dart';
+import 'package:mediops/core/themes/app_text_styles.dart';
+import 'package:mediops/core/widgets/app_primary_button.dart';
+import 'package:mediops/features/login/UI/login_screen.dart';
 import 'package:mediops/features/onboarding/feature_card.dart';
-import 'package:mediops/features/payment/payment_screen.dart';
+
 
 class MediOpsOnboarding extends StatelessWidget {
   const MediOpsOnboarding({super.key});
@@ -9,107 +15,93 @@ class MediOpsOnboarding extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isWide = MediaQuery.of(context).size.width > 800;
-    const cardHeight = 460.0;
+    final cardHeight = 470.h;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF1F9FF),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
           child: Column(
             children: [
               /// FREE TRIAL BADGE
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF00F488E),
-                  borderRadius: BorderRadius.circular(20),
+                  color: AppColors.borderLight,
+                  borderRadius: BorderRadius.circular(24.r),
                 ),
                 child: Text(
-                  '🎉 1 Month Free Trial – No Credit Card Required',
-                  style: GoogleFonts.mulish(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
+                  '🎉 1 Month Free Trial • No Credit Card Required',
+                  style: AppTextStyles.badge,
                 ),
               ),
 
-              const SizedBox(height: 28),
+              SizedBox(height: 32.h),
 
-              /// LOGO
               Image.asset(
                 'assets/images/mediops light.png',
-                height: 190,
+                height: 190.h,
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: 28.h),
 
-              /// MAIN VALUE PROPOSITION
               Text(
                 'Run Your Clinic Like a Business',
-                style: GoogleFonts.mulish(
-                  fontSize: 38,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF0F274A),
-                ),
+                style: AppTextStyles.headline,
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 12),
+              SizedBox(height: 14.h),
 
               Text(
                 'Appointments, patients, payments, and growth — all in one system.',
-                style: GoogleFonts.mulish(
-                  fontSize: 18,
-                  height: 1.4,
-                  color: const Color(0xFF0F274A).withOpacity(0.75),
+                style: AppTextStyles.bodyMuted.copyWith(
+                  fontSize: 18.sp,
+                  color: AppColors.textPrimary.withOpacity(0.75),
                 ),
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 48),
+              SizedBox(height: 52.h),
 
-              /// PRICING / ROLE CARDS
               isWide
                   ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Expanded(
                           child: SizedBox(
                             height: cardHeight,
-                            child: FeatureCard(
+                            child: const FeatureCard(
                               title: 'For Patients',
                               subtitle: 'Always Free',
                               description:
-                                  'Mobile apps for iOS & Android\nSmart reminders & easy booking',
-                              borderColor: Color(0xFF0F274A),
+                                  'iOS & Android apps\nSmart reminders & booking',
+                              borderColor: AppColors.borderLight,
                               features: [
-                                'Book appointments easily',
-                                'WhatsApp & notification reminders',
-                                'View medical history',
-                                'Free mobile app',
+                                'Easy booking',
+                                'WhatsApp reminders',
+                                'Medical history',
+                                'Free forever',
                               ],
                             ),
                           ),
                         ),
-                        SizedBox(width: 32),
+                        SizedBox(width: 32.w),
                         Expanded(
                           child: SizedBox(
                             height: cardHeight,
-                            child: FeatureCard(
+                            child: const FeatureCard(
                               title: 'For Clinics',
                               subtitle: '500 EGP / month',
                               description:
-                                  'Complete clinic management platform\nMobile & desktop apps',
-                              borderColor: Color(0xFF00F488E),
+                                  'All-in-one management system\nMobile & web',
+                              borderColor: AppColors.secondary,
                               features: [
-                                '1 month FREE trial',
-                                'Profit & sales management',
-                                'Schedule & staff management',
-                                'Patient history & analytics',
-                                'Referrals & service packages',
-                                'WhatsApp & push notifications',
+                                '1 month free trial',
+                                'Sales & profit tracking',
+                                'Scheduling & staff',
+                                'Patient analytics',
+                                'Referrals & packages',
                               ],
                             ),
                           ),
@@ -117,101 +109,62 @@ class MediOpsOnboarding extends StatelessWidget {
                       ],
                     )
                   : Column(
-                      children: const [
+                      children: [
                         SizedBox(
                           height: cardHeight,
-                          child: FeatureCard(
+                          child: const FeatureCard(
                             title: 'For Patients',
                             subtitle: 'Always Free',
                             description:
-                                'Mobile apps for iOS & Android\nSmart reminders & easy booking',
-                            borderColor: Color(0xFF0F274A),
+                                'iOS & Android apps\nSmart reminders & booking',
+                            borderColor: AppColors.borderLight,
                             features: [
-                              'Book appointments easily',
-                              'WhatsApp & notification reminders',
-                              'View medical history',
-                              'Free mobile app',
+                              'Easy booking',
+                              'WhatsApp reminders',
+                              'Medical history',
+                              'Free forever',
                             ],
                           ),
                         ),
-                        SizedBox(height: 32),
+                        SizedBox(height: 32.h),
                         SizedBox(
                           height: cardHeight,
-                          child: FeatureCard(
+                          child: const FeatureCard(
                             title: 'For Clinics',
                             subtitle: '500 EGP / month',
                             description:
-                                'Complete clinic management platform\nMobile & desktop apps',
-                            borderColor: Color(0xFF00F488E),
+                                'All-in-one management system\nMobile & web',
+                            borderColor: AppColors.secondary,
                             features: [
-                              '1 month FREE trial',
-                              'Profit & sales management',
-                              'Schedule & staff management',
-                              'Patient history & analytics',
-                              'Referrals & service packages',
-                              'WhatsApp & push notifications',
+                              '1 month free trial',
+                              'Sales & profit tracking',
+                              'Scheduling & staff',
+                              'Patient analytics',
+                              'Referrals & packages',
                             ],
                           ),
                         ),
                       ],
                     ),
 
-              const SizedBox(height: 56),
+              SizedBox(height: 60.h),
 
-              /// PRIMARY CTA
-              SizedBox(
-                width: 260,
-                height: 62,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const PaymentScreen(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    elevation: 12,
-                    backgroundColor: Colors.transparent,
-                    shadowColor: Colors.black.withOpacity(0.3),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32),
-                    ),
-                  ),
-                  child: Ink(
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color(0xFF00F488E),
-                          Color(0xFF0F274A),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(32),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Start Free Trial',
-                        style: GoogleFonts.mulish(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              AppPrimaryButton(
+                text: 'Start Free Trial',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  );
+                },
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: 18.h),
 
-              /// SECONDARY TRUST TEXT
               Text(
                 'No credit card required • Cancel anytime',
-                style: GoogleFonts.mulish(
-                  fontSize: 14,
-                  color: const Color(0xFF0F274A).withOpacity(0.6),
+                style: AppTextStyles.bodyMuted.copyWith(
+                  color: AppColors.textMuted.withOpacity(0.6),
                 ),
               ),
             ],

@@ -1,0 +1,11 @@
+import 'package:dio/dio.dart';
+import 'package:mediops/core/networks/api_constatns.dart';
+import 'package:retrofit/retrofit.dart';
+
+part 'api_services.g.dart';
+
+@RestApi(baseUrl: ApiConstants.baseUrl)
+abstract class ApiService {
+  factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
+
+}
