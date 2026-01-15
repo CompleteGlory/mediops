@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mediops/core/themes/app_colors.dart';
+
+typedef Validator = String? Function(String?);
 
 class AppTextField extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final bool obscureText;
   final TextInputType keyboardType;
+  final ValueChanged<String>? onChanged;
+  final Validator? validator;
+  final Widget? suffixIcon;
 
   const AppTextField({
     super.key,
@@ -13,15 +19,22 @@ class AppTextField extends StatelessWidget {
     required this.controller,
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
+    this.onChanged,
+    this.validator,
+    this.suffixIcon,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
-      style: const TextStyle(fontFamily: 'mulish'),
+      onChanged: onChanged,
+      validator: validator,
+      style: const TextStyle(
+        fontFamily: 'mulish',
+      ),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
@@ -34,20 +47,21 @@ class AppTextField extends StatelessWidget {
           horizontal: 20.w,
           vertical: 18.h,
         ),
+        suffixIcon: suffixIcon,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
-          borderSide: const BorderSide(color: Color(0xFF0F274A)),
+          borderSide: const BorderSide(color: AppColors.primary),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
           borderSide: BorderSide(
-            color: const Color(0xFF0F274A).withOpacity(0.3),
+            color: AppColors.primary.withOpacity(0.3),
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
           borderSide: const BorderSide(
-            color: Color(0xFF0F488E),
+            color: AppColors.primary,
             width: 2,
           ),
         ),

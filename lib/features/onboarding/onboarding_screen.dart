@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mediops/core/helpers/extensions.dart';
+import 'package:mediops/core/routing/routes.dart';
 import 'package:mediops/core/themes/app_colors.dart';
 import 'package:mediops/core/themes/app_text_styles.dart';
 import 'package:mediops/core/widgets/app_primary_button.dart';
@@ -152,9 +154,8 @@ class MediOpsOnboarding extends StatelessWidget {
               AppPrimaryButton(
                 text: 'Start Free Trial',
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                 context.pushNamed(
+                   Routes.register,
                   );
                 },
               ),
