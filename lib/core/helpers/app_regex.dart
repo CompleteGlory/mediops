@@ -5,9 +5,8 @@ class AppRegex {
   }
 
   static bool isPasswordValid(String password) {
-    return RegExp(
-            r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
-        .hasMatch(password);
+    // Password must be at least 6 characters
+    return password.length >= 6;
   }
 
     static bool isPhoneNumberValid(String phoneNumber) {

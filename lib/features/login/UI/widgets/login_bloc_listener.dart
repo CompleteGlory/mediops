@@ -29,37 +29,53 @@ class LoginBlocListener extends StatelessWidget {
             Navigator.of(context, rootNavigator: true).pop();
 
             // ✅ SAVE TOKEN
-            SharedPrefHelper.setData(
-              SharedPrefKeys.userToken,
-              loginResponse.token,
-            );
-            DioFactory.setTokenIntoHeaderAfterLogin(loginResponse.token);
+            if (loginResponse.token != null) {
+              SharedPrefHelper.setData(
+                SharedPrefKeys.userToken,
+                loginResponse.token,
+              );
+              DioFactory.setTokenIntoHeaderAfterLogin(loginResponse.token ?? '');
 
-            // ✅ NAVIGATE BASED ON PERMISSION
-            String route;
-            
-            if (loginResponse.permission == 0) {
-              // Permission 0: Patient/Public user (limited access)
-              route = Routes.patient;
-            } else if (loginResponse.permission == 1) {
-              // Permission 1: Therapist (moderate access)
-              route = Routes.therapist;
-            } else if (loginResponse.permission >= 2) {
-              // Permission >= 2: Administrator/Secretary (full access)
-              route = Routes.clinicAdmin;
+              // ✅ NAVIGATE BASED ON PERMISSION
+              String route;
+              
+              if (loginResponse.permission == 0) {
+                // Permission 0: Patient/Public user (limited access)
+                route = Routes.patient;
+              } else if (loginResponse.permission == 1) {
+                // Permission 1: Therapist (moderate access)
+                route = Routes.therapist;
+              } else if ((loginResponse.permission ?? 0) >= 2) {
+                // Permission >= 2: Administrator/Secretary (full access)
+                route = Routes.clinicAdmin;
+              } else {
+                route = Routes.login;
+              }
+              
+              // Remove all previous routes from stack to prevent back navigation
+              Navigator.pushNamedAndRemoveUntil(context, route, (route) => false);
             } else {
-              route = Routes.login;
+              // Token is missing, show error
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Authentication failed check your credentials !.'),
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 4),
+                ),
+              );
             }
-            
-            Navigator.pushReplacementNamed(context, route);
           },
           failure: (message) {
-            Navigator.of(context, rootNavigator: true).pop();
+            // Close the loading dialog if it exists
+            if (Navigator.canPop(context)) {
+              Navigator.of(context, rootNavigator: true).pop();
+            }
 
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(message),
                 backgroundColor: Colors.red,
+                duration: const Duration(seconds: 4),
               ),
             );
           },

@@ -8,7 +8,9 @@ import 'package:mediops/features/login/logic/cubit/login_cubit.dart';
 import 'package:mediops/features/onboarding/onboarding_screen.dart';
 import 'package:mediops/features/patient/UI/patient_screen.dart';
 import 'package:mediops/features/register/UI/register_screen.dart';
-import 'package:mediops/features/register/logic/cubit/register_cubit.dart';
+import 'package:mediops/features/register/logic/cubit/client_register_cubit.dart';
+import 'package:mediops/features/register/logic/cubit/doctor_register_cubit.dart';
+import 'package:mediops/features/register/logic/cubit/clinic_register_cubit.dart';
 import 'package:mediops/features/therapist/UI/therapist_screen.dart';
 
 class AppRouter {
@@ -25,8 +27,18 @@ class AppRouter {
         );
       case Routes.register:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => getIt<RegisterCubit>(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => getIt<ClinicRegisterCubit>(),
+              ),
+              BlocProvider(
+                create: (context) => getIt<DoctorRegisterCubit>(),
+              ),
+              BlocProvider(
+                create: (context) => getIt<ClientRegisterCubit>(),
+              ),
+            ],
             child: const RegisterScreen(),
           ),
         );

@@ -9,22 +9,28 @@ class ClinicAdminScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: Text(
-          'Clinic Admin Dashboard',
-          style: TextStyle(
-            fontFamily: 'mulish',
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+    return WillPopScope(
+      onWillPop: () async {
+        // Exit the app on back press
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          title: Text(
+            'Clinic Admin Dashboard',
+            style: TextStyle(
+              fontFamily: 'mulish',
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
+          backgroundColor: AppColors.primary,
+          elevation: 0,
         ),
-        backgroundColor: AppColors.primary,
-        elevation: 0,
+        body: const SizedBox.expand(),
       ),
-      body: const SizedBox.expand(),
     );
   }
 }

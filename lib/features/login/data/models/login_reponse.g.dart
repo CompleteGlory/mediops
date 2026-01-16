@@ -8,9 +8,9 @@ part of 'login_reponse.dart';
 
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
     LoginResponse(
-      token: json['jwt'] as String,
-      message: json['message'] as String,
-      permission: (json['permission'] as num).toInt(),
+      token: json['jwt'] as String?,
+      message: json['message'] as String?,
+      permission: (json['permission'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>

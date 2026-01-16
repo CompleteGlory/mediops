@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mediops/core/routing/routes.dart';
-import 'package:mediops/features/register/data/models/register_response.dart';
-import 'package:mediops/features/register/logic/cubit/clinic_register_cubit.dart';
-import 'package:mediops/features/register/logic/cubit/clinic_register_state.dart';
+import 'package:mediops/features/register/data/models/client_register_response.dart';
+import 'package:mediops/features/register/logic/cubit/client_register_cubit.dart';
+import 'package:mediops/features/register/logic/cubit/client_register_state.dart';
 
-class RegisterBlocListener extends StatelessWidget {
-  const RegisterBlocListener({super.key});
+class ClientRegisterBlocListener extends StatelessWidget {
+  const ClientRegisterBlocListener({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ClinicRegisterCubit, ClinicRegisterState<RegisterResponse>>(
+    return BlocListener<ClientRegisterCubit, ClientRegisterState<ClientRegisterResponse>>(
       listener: (context, state) {
         state.when(
           initial: () {},
@@ -27,7 +27,7 @@ class RegisterBlocListener extends StatelessWidget {
 
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Registration successful! Please login.'),
+                content: Text('Client registration successful! Please login.'),
                 backgroundColor: Colors.green,
               ),
             );

@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mediops/core/helpers/extensions.dart';
+import 'package:mediops/core/routing/routes.dart';
 import 'package:mediops/core/themes/app_colors.dart';
 import 'package:mediops/core/widgets/app_primary_button.dart';
 import 'package:mediops/core/widgets/app_text_field.dart';
@@ -9,7 +11,6 @@ import 'package:mediops/core/widgets/auth_form_container.dart';
 import 'package:mediops/core/widgets/spacing.dart';
 import 'package:mediops/features/login/UI/widgets/login_bloc_listener.dart';
 import 'package:mediops/features/login/logic/cubit/login_cubit.dart';
-import 'package:mediops/features/register/UI/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -118,12 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             constraints: BoxConstraints(maxWidth: fieldWidth),
                             child: TextButton(
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const RegisterScreen(),
-                                  ),
-                                );
+                               context.pushNamed(Routes.register);
                               },
                               child: Text(
                                 "Don't have an account? Register",

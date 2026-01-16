@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mediops/core/networks/api_result.dart';
 import 'package:mediops/features/register/data/models/register_response.dart';
 import '../../data/models/register_request_body.dart';
-import '../../data/repos/register_repo.dart';
-import 'register_state.dart';
+import '../../data/repos/clinic_register_repo.dart';
+import 'clinic_register_state.dart';
 
-class RegisterCubit extends Cubit<RegisterState<RegisterResponse>> {
-  final RegisterRepo _registerRepo;
-  RegisterCubit(this._registerRepo) : super(const RegisterState.initial());
+class ClinicRegisterCubit extends Cubit<ClinicRegisterState<RegisterResponse>> {
+  final ClinicRegisterRepo _registerRepo;
+  ClinicRegisterCubit(this._registerRepo) : super(const ClinicRegisterState.initial());
 
   TextEditingController clinicNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -17,13 +17,13 @@ class RegisterCubit extends Cubit<RegisterState<RegisterResponse>> {
 
   void togglePasswordVisibility() {
     obscurePassword = !obscurePassword;
-    emit(const RegisterState.initial());
+    emit(const ClinicRegisterState.initial());
   }
 
   Future<void> register() async {
     if (!formKey.currentState!.validate()) return;
 
-    emit(const RegisterState.loading());
+    emit(const ClinicRegisterState.loading());
 
     final body = RegisterRequestBody(
       name: clinicNameController.text.trim(),
@@ -34,10 +34,10 @@ class RegisterCubit extends Cubit<RegisterState<RegisterResponse>> {
 
     result.when(
       success: (data) {
-        emit(RegisterState.success(data));
+        emit(ClinicRegisterState.success(data));
       },
       failure: (error) {
-        emit(RegisterState.failure(error.message.toString()));
+        emit(ClinicRegisterState.failure(error.message.toString()));
       },
     );
   }

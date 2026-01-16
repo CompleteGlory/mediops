@@ -12,22 +12,28 @@ class TherapistScreen extends StatelessWidget {
     // Permission 1: Therapist (moderate access)
     // Features: My Schedule, Appointments, Sales
     
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: Text(
-          'Therapist Dashboard',
-          style: TextStyle(
-            fontFamily: 'mulish',
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+    return WillPopScope(
+      onWillPop: () async {
+        // Exit the app on back press
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          title: Text(
+            'Therapist Dashboard',
+            style: TextStyle(
+              fontFamily: 'mulish',
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
+          backgroundColor: AppColors.primary,
+          elevation: 0,
         ),
-        backgroundColor: AppColors.primary,
-        elevation: 0,
+        body: const SizedBox.expand(),
       ),
-      body: const SizedBox.expand(),
     );
   }
 }

@@ -33,7 +33,7 @@ class AppTextStyles {
 
   static TextStyle button = TextStyle(
     fontFamily: _fontFamily,
-    fontSize: 18.sp,
+    fontSize: 22.sp,
     fontWeight: FontWeight.w800,
     color: Colors.white,
   );

@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'register_state.dart';
+part of 'doctor_register_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -12,7 +12,7 @@ part of 'register_state.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$RegisterState<T> {
+mixin _$DoctorRegisterState<T> {
 
 
 
@@ -20,7 +20,7 @@ mixin _$RegisterState<T> {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RegisterState<T>);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DoctorRegisterState<T>);
 }
 
 
@@ -29,20 +29,20 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'RegisterState<$T>()';
+  return 'DoctorRegisterState<$T>()';
 }
 
 
 }
 
 /// @nodoc
-class $RegisterStateCopyWith<T,$Res>  {
-$RegisterStateCopyWith(RegisterState<T> _, $Res Function(RegisterState<T>) __);
+class $DoctorRegisterStateCopyWith<T,$Res>  {
+$DoctorRegisterStateCopyWith(DoctorRegisterState<T> _, $Res Function(DoctorRegisterState<T>) __);
 }
 
 
-/// Adds pattern-matching-related methods to [RegisterState].
-extension RegisterStatePatterns<T> on RegisterState<T> {
+/// Adds pattern-matching-related methods to [DoctorRegisterState].
+extension DoctorRegisterStatePatterns<T> on DoctorRegisterState<T> {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -192,7 +192,7 @@ return failure(_that.message);case _:
 /// @nodoc
 
 
-class _Initial<T> implements RegisterState<T> {
+class _Initial<T> implements DoctorRegisterState<T> {
   const _Initial();
   
 
@@ -212,7 +212,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'RegisterState<$T>.initial()';
+  return 'DoctorRegisterState<$T>.initial()';
 }
 
 
@@ -224,7 +224,7 @@ String toString() {
 /// @nodoc
 
 
-class _Loading<T> implements RegisterState<T> {
+class _Loading<T> implements DoctorRegisterState<T> {
   const _Loading();
   
 
@@ -244,7 +244,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'RegisterState<$T>.loading()';
+  return 'DoctorRegisterState<$T>.loading()';
 }
 
 
@@ -256,13 +256,13 @@ String toString() {
 /// @nodoc
 
 
-class _Success<T> implements RegisterState<T> {
+class _Success<T> implements DoctorRegisterState<T> {
   const _Success(this.data);
   
 
  final  T data;
 
-/// Create a copy of RegisterState
+/// Create a copy of DoctorRegisterState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
@@ -281,14 +281,14 @@ int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(
 
 @override
 String toString() {
-  return 'RegisterState<$T>.success(data: $data)';
+  return 'DoctorRegisterState<$T>.success(data: $data)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$SuccessCopyWith<T,$Res> implements $RegisterStateCopyWith<T, $Res> {
+abstract mixin class _$SuccessCopyWith<T,$Res> implements $DoctorRegisterStateCopyWith<T, $Res> {
   factory _$SuccessCopyWith(_Success<T> value, $Res Function(_Success<T>) _then) = __$SuccessCopyWithImpl;
 @useResult
 $Res call({
@@ -307,7 +307,7 @@ class __$SuccessCopyWithImpl<T,$Res>
   final _Success<T> _self;
   final $Res Function(_Success<T>) _then;
 
-/// Create a copy of RegisterState
+/// Create a copy of DoctorRegisterState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? data = freezed,}) {
   return _then(_Success<T>(
@@ -322,13 +322,13 @@ as T,
 /// @nodoc
 
 
-class _Failure<T> implements RegisterState<T> {
+class _Failure<T> implements DoctorRegisterState<T> {
   const _Failure(this.message);
   
 
  final  String message;
 
-/// Create a copy of RegisterState
+/// Create a copy of DoctorRegisterState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
@@ -347,14 +347,14 @@ int get hashCode => Object.hash(runtimeType,message);
 
 @override
 String toString() {
-  return 'RegisterState<$T>.failure(message: $message)';
+  return 'DoctorRegisterState<$T>.failure(message: $message)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$FailureCopyWith<T,$Res> implements $RegisterStateCopyWith<T, $Res> {
+abstract mixin class _$FailureCopyWith<T,$Res> implements $DoctorRegisterStateCopyWith<T, $Res> {
   factory _$FailureCopyWith(_Failure<T> value, $Res Function(_Failure<T>) _then) = __$FailureCopyWithImpl;
 @useResult
 $Res call({
@@ -373,7 +373,7 @@ class __$FailureCopyWithImpl<T,$Res>
   final _Failure<T> _self;
   final $Res Function(_Failure<T>) _then;
 
-/// Create a copy of RegisterState
+/// Create a copy of DoctorRegisterState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
   return _then(_Failure<T>(

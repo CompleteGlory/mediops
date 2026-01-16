@@ -4,10 +4,12 @@ part 'register_response.g.dart';
 
 @JsonSerializable()
 class RegisterResponse {
-  final String data;
+  final String? data;
+  final String? message;
 
   RegisterResponse({
-    required this.data,
+    this.data,
+    this.message,
   });
 
   factory RegisterResponse.fromJson(Map<String, dynamic> json) =>
