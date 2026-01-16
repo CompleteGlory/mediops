@@ -15,7 +15,7 @@ class ClientRegisterRepo {
     try {
       final response = await _apiService.registerClient(body);
       // If response is successful, return empty response with success
-      final clientResponse = response.data ?? ClientRegisterResponse(message: 'Registration successful');
+      final clientResponse = response.data;
       return ApiResult.success(clientResponse);
     } catch (error) {
       return ApiResult.failure(ApiErrorHandler.handle(error));
