@@ -14,7 +14,7 @@ class ClinicRegisterRepo {
     try {
       final response = await _apiService.register(body);
       // If response is successful, return with data or default response
-      final registerResponse = response.data ?? RegisterResponse(data: 'validated', message: 'Registration successful');
+      final registerResponse = response.data;
       return ApiResult.success(registerResponse);
     } catch (e) {
       return ApiResult.failure(ApiErrorHandler.handle(e));

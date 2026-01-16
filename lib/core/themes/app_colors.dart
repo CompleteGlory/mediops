@@ -1,9 +1,11 @@
+// ignore_for_file: use_full_hex_values_for_flutter_colors, deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 class AppColors {
   // Primary & Brand Colors
   static const Color primary = Color(0xFF0F488E); // dark blue
-  static const Color secondary = Color(0xFF00F488E); // green accent
+  static const Color secondary = Color(0xff00f488e); // green accent
 
   // Text Colors
   static const Color textPrimary = Color(0xFF0F274A); // dark gray / almost black

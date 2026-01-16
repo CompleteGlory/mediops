@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mediops/core/di/dependency_injection.dart';
 import 'package:mediops/core/routing/routes.dart';
-import 'package:mediops/features/clinic_admin/UI/clinic_admin_screen.dart';
+import 'package:mediops/features/clinic_admin/UI/clinic_onboarding_flow.dart';
 import 'package:mediops/features/login/UI/login_screen.dart';
 import 'package:mediops/features/login/logic/cubit/login_cubit.dart';
 import 'package:mediops/features/onboarding/onboarding_screen.dart';
@@ -52,7 +52,7 @@ class AppRouter {
         );
       case Routes.clinicAdmin:
         return MaterialPageRoute(
-          builder: (_) => const ClinicAdminScreen(),
+          builder: (_) => const ClinicOnboardingFlow(),
         );
       default:
         null;

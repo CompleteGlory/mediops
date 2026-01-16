@@ -1,4 +1,6 @@
 // core/widgets/auth_form_container.dart
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

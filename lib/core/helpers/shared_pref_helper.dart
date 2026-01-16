@@ -1,4 +1,4 @@
-// ignore_for_file: type_literal_in_constant_pattern
+// ignore_for_file: strict_top_level_inference, type_literal_in_constant_pattern
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

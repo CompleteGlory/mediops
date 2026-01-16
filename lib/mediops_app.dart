@@ -9,15 +9,13 @@ class MediopsApp extends StatelessWidget {
   final AppRouter appRouter;
   const MediopsApp({super.key, required this.appRouter});
 
- 
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: getDesignSize(),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_, __) {
+      builder: (_, _) {
         return MaterialApp(
           title: 'MediOps',
           debugShowCheckedModeBanner: false,
