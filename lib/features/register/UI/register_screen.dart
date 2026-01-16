@@ -1,13 +1,19 @@
 // ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mediops/core/helpers/app_regex.dart';
 import 'package:mediops/core/helpers/extensions.dart';
 import 'package:mediops/core/routing/routes.dart';
 import 'package:mediops/core/themes/app_colors.dart';
-import 'package:mediops/core/widgets/app_primary_button.dart';
-import 'package:mediops/core/widgets/app_text_field.dart';
+import 'package:mediops/core/widgets/auth_form_container.dart';
+import 'package:mediops/core/widgets/spacing.dart';
+import 'package:mediops/features/register/UI/widgets/client_register_form.dart';
+import 'package:mediops/features/register/UI/widgets/client_register_bloc_listener.dart';
+import 'package:mediops/features/register/UI/widgets/doctor_register_form.dart';
+import 'package:mediops/features/register/UI/widgets/register_bloc_listener.dart';
+import 'package:mediops/features/register/UI/widgets/clinic_register_form.dart';
+import 'package:mediops/features/register/UI/widgets/doctor_register_bloc_listener.dart';
+
+enum RegistrationType { clinic, doctor, client }
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -17,203 +23,152 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegistersScreenState extends State<RegisterScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
-  bool obscurePassword = true;
-  int passwordStrengthValue = 0;
-
-  // Calculate password strength using AppRegex
-  void _updatePasswordStrength(String password) {
-    int strength = 0;
-    if (AppRegex.hasLowerCase(password)) strength++;
-    if (AppRegex.hasUpperCase(password)) strength++;
-    if (AppRegex.hasNumber(password)) strength++;
-    if (AppRegex.hasSpecialCharacter(password)) strength++;
-    if (AppRegex.hasMinLength(password)) strength++;
-    setState(() {
-      passwordStrengthValue = strength;
-    });
-  }
-
-  Color _getStrengthColor() {
-    switch (passwordStrengthValue) {
-      case 5:
-        return Colors.green;
-      case 4:
-        return Colors.lightGreen;
-      case 3:
-        return Colors.orange;
-      default:
-        return Colors.red;
-    }
-  }
-
-  String _getStrengthText() {
-    switch (passwordStrengthValue) {
-      case 5:
-        return 'Strong';
-      case 4:
-        return 'Good';
-      case 3:
-        return 'Weak';
-      default:
-        return 'Very Weak';
-    }
-  }
+  RegistrationType registrationType = RegistrationType.clinic;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  // LOGO
-                  Image.asset('assets/images/mediops light.png', height: 120.h),
-                  SizedBox(height: 24.h),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final formWidth = constraints.maxWidth > 600 ? 600.w : constraints.maxWidth * 0.95;
 
-                  Text(
-                    'Register Your Clinic',
-                    style: TextStyle(
-                      fontFamily: 'mulish',
-                      fontSize: 32.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.secondary,
-                    ),
-                  ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    'Sign up to manage appointments, patients, and payments efficiently.',
-                    style: TextStyle(
-                      fontFamily: 'mulish',
-                      fontSize: 16.sp,
-                      color: AppColors.secondary.withOpacity(0.7),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 40.h),
+            return Center(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: formWidth),
+                  child: AuthFormContainer(
+                    child: Column(
+                      children: [
+                        Image.asset('assets/images/logo white.png', height: 100.h),
+                        verticalSpace(20),
 
-                  AppTextField(
-                    label: 'Clinic Name',
-                    controller: nameController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Clinic name is required';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20.h),
-
-                  AppTextField(
-                    label: 'Email',
-                    controller: emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Email is required';
-                      } else if (!AppRegex.isEmailValid(value)) {
-                        return 'Enter a valid email';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20.h),
-
-                  AppTextField(
-                    label: 'Password',
-                    controller: passwordController,
-                    obscureText: obscurePassword,
-                    onChanged: (val) {
-                      _updatePasswordStrength(val); // <-- CALL THE METHOD HERE
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty)
-                        return 'Password is required';
-                      if (!AppRegex.isPasswordValid(value)) {
-                        return 'Password must contain:\n- Min 8 chars\n- Upper & lower case\n- Number & special char';
-                      }
-                      return null;
-                    },
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        obscurePassword
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        color: AppColors.secondary.withOpacity(0.7),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          obscurePassword = !obscurePassword;
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-
-                  // Password strength bar
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: passwordStrengthValue,
-                        child: Container(
-                          height: 6.h,
-                          decoration: BoxDecoration(
-                            color: _getStrengthColor(),
-                            borderRadius: BorderRadius.circular(3.r),
+                        Text(
+                          'Create Account',
+                          style: TextStyle(
+                            fontFamily: 'mulish',
+                            fontSize: 26.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.secondary,
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 5 - passwordStrengthValue,
-                        child: Container(
-                          height: 6.h,
-                          color: AppColors.secondary.withOpacity(0.2),
+                        verticalSpace(6),
+                        Text(
+                          'Select account type to continue',
+                          style: TextStyle(
+                            fontFamily: 'mulish',
+                            fontSize: 14.sp,
+                            color: AppColors.secondary.withOpacity(0.7),
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                      ),
-                      SizedBox(width: 8.w),
-                      Text(
-                        _getStrengthText(),
-                        style: TextStyle(
-                          fontFamily: 'mulish',
-                          fontSize: 12.sp,
-                          color: AppColors.secondary,
-                        ),
-                      ),
-                    ],
-                  ),
+                        verticalSpace(28),
 
-                  SizedBox(height: 30.h),
-                  AppPrimaryButton(
-                    text: 'Register Clinic',
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        // TODO: Call Registers API
-                      }
-                    },
-                  ),
-                  SizedBox(height: 16.h),
-                  TextButton(
-                    onPressed: () => context.pushNamed(Routes.login),
-                    child: Text(
-                      'Already have an account? Login',
-                      style: TextStyle(
-                        fontFamily: 'mulish',
-                        fontSize: 14.sp,
-                        color: AppColors.primary,
-                      ),
+                        // Registration Type Selector
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _RegistrationTypeButton(
+                                    title: 'Clinic Admin',
+                                    isSelected: registrationType == RegistrationType.clinic,
+                                    onPressed: () => setState(() => registrationType = RegistrationType.clinic),
+                                  ),
+                                ),
+                                horizontalSpace(12),
+                                Expanded(
+                                  child: _RegistrationTypeButton(
+                                    title: 'Doctor',
+                                    isSelected: registrationType == RegistrationType.doctor,
+                                    onPressed: () => setState(() => registrationType = RegistrationType.doctor),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            verticalSpace(12),
+                            _RegistrationTypeButton(
+                              title: 'Client',
+                              isSelected: registrationType == RegistrationType.client,
+                              onPressed: () => setState(() => registrationType = RegistrationType.client),
+                            ),
+                          ],
+                        ),
+                        verticalSpace(28),
+
+                        // Show appropriate form based on registration type
+                        if (registrationType == RegistrationType.clinic)
+                          const ClinicRegisterForm()
+                        else if (registrationType == RegistrationType.doctor)
+                          const DoctorRegisterForm()
+                        else
+                          const ClientRegisterForm(),
+
+                        verticalSpace(12),
+                        TextButton(
+                          onPressed: () => context.pushNamed(Routes.login),
+                          child: Text(
+                            'Already have an account? Login',
+                            style: TextStyle(
+                              fontFamily: 'mulish',
+                              fontSize: 13.sp,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+
+                        const RegisterBlocListener(),
+                        const DoctorRegisterBlocListener(),
+                        const ClientRegisterBlocListener(),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _RegistrationTypeButton extends StatelessWidget {
+  final String title;
+  final bool isSelected;
+  final VoidCallback onPressed;
+
+  const _RegistrationTypeButton({
+    required this.title,
+    required this.isSelected,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(12.r),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 16.h),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(
+            color: isSelected ? AppColors.primary : AppColors.secondary.withOpacity(0.3),
+            width: isSelected ? 2 : 1,
+          ),
+          color: isSelected ? AppColors.primary.withOpacity(0.1) : Colors.transparent,
+        ),
+        child: Center(
+          child: Text(
+            title,
+            style: TextStyle(
+              fontFamily: 'mulish',
+              fontSize: 14.sp,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+              color: isSelected ? AppColors.primary : AppColors.secondary.withOpacity(0.7),
             ),
           ),
         ),

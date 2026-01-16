@@ -55,6 +55,23 @@ class DioFactory {
       ),
     );
 
+    /// Handle empty responses - convert to empty object
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onResponse: (response, handler) {
+          // If response is successful but has empty body, convert to empty JSON object
+          if (response.statusCode == 200 && (response.data == null || response.data == '')) {
+            response.data = <String, dynamic>{};
+          }
+          // Ensure data is always a proper Map<String, dynamic>
+          else if (response.statusCode == 200 && response.data is Map) {
+            response.data = Map<String, dynamic>.from(response.data as Map);
+          }
+          return handler.next(response);
+        },
+      ),
+    );
+
     /// Handle Unauthorized
     dio.interceptors.add(
       InterceptorsWrapper(
